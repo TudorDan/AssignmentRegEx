@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace AssignmentRegEx
@@ -28,16 +29,38 @@ namespace AssignmentRegEx
             return Regex.IsMatch(text, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase);
         }
 
+        public string ReformatPhone(int number)
+        {
+            return String.Format("{0:(###) ###-####}", number);
+        } 
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            bool ok = true;
+
             if (!ValidName(txtName.Text))
+            {
                 MessageBox.Show("The name is invalid (only alphabetical characters are allowed)");
+                ok = false;
+            }   
 
             if (!ValidPhone(txtPhone.Text))
+            {
                 MessageBox.Show("The phone is invalid: only (###) ###-#### digits format is allowed");
+                ok = false;
+            }
 
             if (!ValidEmail(txtEmail.Text))
+            {
                 MessageBox.Show("The email is invalid!");
+                ok = false;
+            }
+              
+            if (ok)
+            {
+                int number = Int32.Parse(txtPhone.Text);
+                txtPhone.Text = ReformatPhone(number);
+            }
         }
     }
 }
